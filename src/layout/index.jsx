@@ -35,7 +35,12 @@ export default function Layout({
           </div>
         )}
       </div>
-      <div className={`container mx-auto text-${contentAlignment}`}>
+      <div
+        className={clsx(
+          `container mx-auto text-${contentAlignment}`,
+          contentAlignment === 'left' && 'pl-28'
+        )}
+      >
         <div>
           {title && (
             <TextItem

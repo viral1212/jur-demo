@@ -32,6 +32,7 @@ export default function Form({
         setTimeout(() => {
           onSubmit(values);
           actions.setSubmitting(false);
+          actions.resetForm();
         }, 500);
       }}
       validationSchema={Yup.object().shape({

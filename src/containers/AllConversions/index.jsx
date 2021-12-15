@@ -36,7 +36,7 @@ const contactList = [
   },
 ];
 
-export default function AllConversions() {
+export default function AllConversions({ setScreenCount }) {
   return (
     <Layout title="Your Conversations" contentAlignment="left">
       <div className="flex flex-col items-start mt-20">
@@ -55,7 +55,7 @@ export default function AllConversions() {
         </ul>
         <div className="w-full flex justify-end pt-20">
           <Button
-            onClick={() => console.log('Create New Conversation')}
+            onClick={() => setScreenCount(2)}
             className="md:p-5"
             shouldShowBorder
             shouldShowShadow

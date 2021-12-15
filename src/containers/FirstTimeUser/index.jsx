@@ -6,43 +6,20 @@ import Layout from '../../layout';
 
 FirstTimeUser.prototypes = {
   setSelectedUser: PropTypes.func.isRequired,
+  contactList: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.number,
+    description: PropTypes.number,
+  }).isRequired,
+  setScreenCount: PropTypes.number,
 };
 
-const contactList = [
-  {
-    id: 1,
-    title: 'Amanda Nano',
-    description: 'Hey there! I’m using Jur chat',
-  },
-  {
-    id: 2,
-    title: 'Rama Jr',
-    description: 'Busy',
-  },
-  {
-    id: 3,
-    title: 'George Silva',
-    description: 'Call if urgent',
-  },
-  {
-    id: 4,
-    title: 'Fu Shang',
-    description: 'New day, new challenges',
-  },
-  {
-    id: 5,
-    title: 'Person Name',
-    description: 'Chat only',
-  },
-  {
-    id: 6,
-    title: 'Person Name',
-    description: 'Hey there! I’m using Jur chat',
-  },
-];
-
-export default function FirstTimeUser({ setSelectedUser }) {
-  const [selectedContactId, setSelectedContactId] = useState(0);
+export default function FirstTimeUser({
+  contactList,
+  setSelectedUser,
+  setScreenCount,
+}) {
+  const [selectedContact, setSelectedContact] = useState(null);
   return (
     <Layout title="Let us know who you are">
       <div className="flex flex-col items-center mt-20">
@@ -50,8 +27,8 @@ export default function FirstTimeUser({ setSelectedUser }) {
           {contactList.map((contact) => (
             <li key={contact.id}>
               <UserItem
-                onClick={() => setSelectedContactId(contact.id)}
-                isSelected={selectedContactId === contact.id}
+                onClick={() => setSelectedContact(contact)}
+                isSelected={selectedContact?.id === contact.id}
                 className="mt-5"
                 title={contact.title}
                 description={contact.description}
@@ -60,10 +37,13 @@ export default function FirstTimeUser({ setSelectedUser }) {
           ))}
         </ul>
       </div>
-      {!!selectedContactId && (
+      {!!selectedContact && (
         <div className="flex justify-end w-full mt-8">
           <Button
-            onClick={() => setSelectedUser(selectedContactId)}
+            onClick={() => {
+              setSelectedUser(selectedContact);
+              setScreenCount(2);
+            }}
             className="md:p-5 mr-28"
             shouldShowBorder
             shouldShowShadow
