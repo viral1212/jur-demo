@@ -44,34 +44,34 @@ const contactList = [
 export default function FirstTimeUser({ setSelectedUser }) {
   const [selectedContactId, setSelectedContactId] = useState(0);
   return (
-    <div>
-      <Layout title="Let us know who you are">
-        <div className="flex flex-col items-center mt-20">
-          <ul>
-            {contactList.map((contact) => (
-              <li key={contact.id}>
-                <UserItem
-                  onClick={() => setSelectedContactId(contact.id)}
-                  isSelected={selectedContactId === contact.id}
-                  className="mt-5"
-                  title={contact.title}
-                  description={contact.description}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-        {!!selectedContactId && (
+    <Layout title="Let us know who you are">
+      <div className="flex flex-col items-center mt-20">
+        <ul>
+          {contactList.map((contact) => (
+            <li key={contact.id}>
+              <UserItem
+                onClick={() => setSelectedContactId(contact.id)}
+                isSelected={selectedContactId === contact.id}
+                className="mt-5"
+                title={contact.title}
+                description={contact.description}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+      {!!selectedContactId && (
+        <div className="flex justify-end w-full mt-8">
           <Button
             onClick={() => setSelectedUser(selectedContactId)}
-            className="absolute right-0 mt-8 md:p-5 mr-80"
+            className="md:p-5 mr-28"
             shouldShowBorder
             shouldShowShadow
           >
             Continue
           </Button>
-        )}
-      </Layout>
-    </div>
+        </div>
+      )}
+    </Layout>
   );
 }
