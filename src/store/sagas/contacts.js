@@ -1,12 +1,12 @@
-import axios from 'axios';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { customAxios } from '../../config/axios';
 import { REQUEST } from '../actions/common';
 import { getContactsListAction, GET_CONTACTS_LIST } from '../actions/contacts';
 
 function* getContacts(action) {
   try {
     const { successCB } = action;
-    const payload = yield axios.get('/contacts');
+    const payload = yield customAxios.get('/contacts');
 
     if (successCB) {
       successCB();

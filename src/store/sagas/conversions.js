@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { customAxios } from '../../config/axios';
 import { REQUEST } from '../actions/common';
 import {
   addConversationAction,
@@ -19,7 +19,7 @@ import {
 function* getConversionsList(action) {
   try {
     const { successCB } = action;
-    const payload = yield axios.get('/conversations');
+    const payload = yield customAxios.get('/conversations');
 
     if (successCB) {
       successCB();
@@ -33,7 +33,7 @@ function* getConversionsList(action) {
 function* addConversions(action) {
   try {
     const { successCB, body } = action;
-    const payload = yield axios.post('/conversations', body);
+    const payload = yield customAxios.post('/conversations', body);
 
     if (successCB) {
       successCB();
@@ -47,7 +47,7 @@ function* addConversions(action) {
 function* getConversion(action) {
   try {
     const { id, successCB } = action;
-    const payload = yield axios.get(`/conversations/:${id}`);
+    const payload = yield customAxios.get(`/conversations/:${id}`);
 
     if (successCB) {
       successCB();
@@ -61,7 +61,10 @@ function* getConversion(action) {
 function* addMessage(action) {
   try {
     const { successCB, body, id } = action;
-    const payload = yield axios.post(`/conversations/:${id}/messages`, body);
+    const payload = yield customAxios.post(
+      `/conversations/:${id}/messages`,
+      body
+    );
 
     if (successCB) {
       successCB();
@@ -75,7 +78,7 @@ function* addMessage(action) {
 function* getMessage(action) {
   try {
     const { id, successCB } = action;
-    const payload = yield axios.get(
+    const payload = yield customAxios.get(
       `/conversations/:${id}/messages/:messageId`
     );
 
@@ -91,7 +94,7 @@ function* getMessage(action) {
 function* getMessagesList(action) {
   try {
     const { id, successCB } = action;
-    const payload = yield axios.get(`/conversations/:${id}/messages`);
+    const payload = yield customAxios.get(`/conversations/:${id}/messages`);
 
     if (successCB) {
       successCB();
