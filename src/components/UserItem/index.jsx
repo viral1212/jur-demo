@@ -43,7 +43,7 @@ export default function UserItem({
           />
         )}
       </div>
-      <div className="flex flex-col ml-5 font-medium">
+      <div className="flex flex-col items-start ml-5 font-medium">
         <TextItem text={title} />
         <TextItem
           text={subtitle}
