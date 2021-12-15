@@ -35,7 +35,6 @@ export default function Form({
       validationSchema={Yup.object().shape({
         [textFieldName]: Yup.string().required(`${textFieldName} is required`),
       })}
-      className={className}
     >
       {(props) => {
         const {
@@ -49,11 +48,10 @@ export default function Form({
           handleReset,
         } = props;
         return (
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-3 gap-32 items-start">
-              <div>
+          <form onSubmit={handleSubmit} className={className}>
+            <div className="grid grid-cols-3 gap-24 items-start">
+              <div className="col-span-2">
                 <InputField
-                  className="col-span-2"
                   name={textFieldName}
                   type="text"
                   disabled={disabled}

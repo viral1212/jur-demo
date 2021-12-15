@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import TextItem from '../../components/TextItem';
 import UserItem from '../../components/UserItem';
 
-FirstTimeUser.prototype = {
+FirstTimeUser.prototypes = {
   setSelectedUser: PropTypes.func.isRequired,
 };
 
@@ -41,7 +41,7 @@ const contactList = [
   },
 ];
 
-function FirstTimeUser({ setSelectedUser }) {
+export default function FirstTimeUser({ setSelectedUser }) {
   const [selectedContactId, setSelectedContactId] = useState(0);
   return (
     <div>
@@ -77,5 +77,3 @@ function FirstTimeUser({ setSelectedUser }) {
     </div>
   );
 }
-
-export default FirstTimeUser;
