@@ -3,7 +3,7 @@ import UserItem from '../../components/UserItem';
 import Form from '../../components/Form';
 import Layout from '../../layout';
 
-export default function NewConversions() {
+export default function SelectedContacts() {
   return (
     <Layout
       title="Welcome George!"

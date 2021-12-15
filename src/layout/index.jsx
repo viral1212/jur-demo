@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../components/Button';
 import { LeftArrowIcon } from '../components/Icon';
 import TextItem from '../components/TextItem';
+import clsx from 'clsx';
 
 Layout.prototypes = {
   showBackButton: PropTypes.bool,
@@ -11,6 +12,7 @@ Layout.prototypes = {
   title: PropTypes.string,
   subTitle: PropTypes.string,
   contentAlignment: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default function Layout({
@@ -20,9 +22,10 @@ export default function Layout({
   title,
   subTitle,
   contentAlignment = 'center',
+  className,
 }) {
   return (
-    <div className="relative mt-20">
+    <div className={clsx('relative my-20', className)}>
       <div className="absolute top-4 left-12">
         {showBackButton && (
           <div>

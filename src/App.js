@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import AllConversions from './containers/AllConversions';
+import Conversions from './containers/Conversions';
 import FirstTimeUser from './containers/FirstTimeUser/FirstTimeUser';
-import NewConversions from './containers/NewConversions';
+import SelectedContacts from './containers/SelectedContacts';
 
 function App() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -9,8 +11,10 @@ function App() {
       {!selectedUser ? (
         <FirstTimeUser setSelectedUser={setSelectedUser} />
       ) : (
-        <NewConversions />
+        <AllConversions />
       )}
+      {/* <SelectedContacts /> */}
+      {/* <Conversions /> */}
     </div>
   );
 }

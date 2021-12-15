@@ -12,6 +12,7 @@ InputField.propTypes = {
   defaultValues: PropTypes.object,
   onSubmit: PropTypes.func,
   submitButtonText: PropTypes.string,
+  formGrid: PropTypes.number,
 };
 
 export default function Form({
@@ -21,6 +22,7 @@ export default function Form({
   disabled,
   className,
   submitButtonText = 'Submit',
+  formGrid = 3,
 }) {
   const textFieldName = fieldName || 'content';
   return (
@@ -49,8 +51,8 @@ export default function Form({
         } = props;
         return (
           <form onSubmit={handleSubmit} className={className}>
-            <div className="grid grid-cols-3 gap-24 items-start">
-              <div className="col-span-2">
+            <div className={`grid grid-cols-${formGrid} gap-24`}>
+              <div className={`col-span-${formGrid - 1}`}>
                 <InputField
                   name={textFieldName}
                   type="text"
