@@ -1,20 +1,16 @@
 import React from 'react';
-import TextItem from '../../components/TextItem';
 import UserItem from '../../components/UserItem';
 import Form from '../../components/Form';
+import Layout from '../../layout';
 
 export default function NewConversions() {
   return (
-    <div>
+    <Layout
+      title="Welcome George!"
+      subTitle="Give title to start a new conversation with 2 participants"
+      showBackButton
+    >
       <div className="flex flex-col items-center mt-20">
-        <TextItem
-          text="Welcome George!"
-          className="pt-4 text-5xl leading-10 font-normal"
-        />
-        <TextItem
-          text="Give title to start a new conversation with 2 participants"
-          className="pt-4 text-3xl text-gray-350 leading-8 font-normal"
-        />
         <div className="grid grid-cols-2 gap-8 pt-12">
           <UserItem
             onClick={() => console.log('hello')}
@@ -38,6 +34,6 @@ export default function NewConversions() {
           />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
