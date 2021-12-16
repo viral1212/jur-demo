@@ -81,7 +81,7 @@ export default function NoExistingConversation() {
       <div className="flex flex-col items-center mt-11">
         <Skeleton visible={isLoading} />
         <ul className="w-64 h-52 lg:h-60 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
-          {contactList.length > 0 &&
+          {contactList?.length > 0 &&
             contactList
               .filter((c) => c.id !== selectedUser.id)
               .map((con) => (

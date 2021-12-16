@@ -55,7 +55,7 @@ export default function SelectedContacts() {
       <div className="flex flex-col items-center mt-20">
         <Skeleton visible={isLoading} />
         <div className="grid grid-cols-2 gap-8 pt-12">
-          {!!conversationContacts.length &&
+          {!!conversationContacts?.length &&
             conversationContacts.map((cont, index) => (
               <UserItem key={index} isSelected title={cont.name} />
             ))}

@@ -40,7 +40,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case ADD_CONVERSATION[REQUEST]:
@@ -59,7 +59,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case GET_CONVERSATION[REQUEST]:
@@ -78,7 +78,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case ADD_CONVERSATIONS_MESSAGE[REQUEST]:
@@ -97,7 +97,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case GET_CONVERSATIONS_MESSAGE[REQUEST]:
@@ -116,7 +116,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case GET_CONVERSATIONS_MESSAGE_LIST[REQUEST]:
@@ -135,7 +135,7 @@ const conversationsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     default:

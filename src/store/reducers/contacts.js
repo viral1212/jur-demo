@@ -47,7 +47,7 @@ const contactsReducers = (
       return {
         ...state,
         isLoading: false,
-        error,
+        error: query,
       };
 
     case SELECTED_CONTACT_FOR_CONVERSATIONS[REQUEST]:

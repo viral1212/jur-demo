@@ -57,7 +57,7 @@ export default function FirstTimeUser() {
       <div className="flex flex-col items-center mt-20">
         <ul className="w-64 h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
           <Skeleton visible={isLoading} />
-          {contactList.length > 0 &&
+          {contactList?.length > 0 &&
             contactList.map((cont) => (
               <li key={cont.id}>
                 <UserItem

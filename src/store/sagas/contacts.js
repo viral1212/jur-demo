@@ -1,5 +1,6 @@
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { customAxios } from '../../config/axios';
+import { showPopup } from '../../utils/toast-notification';
 import { REQUEST } from '../actions/common';
 import { getContactsListAction, GET_CONTACTS_LIST } from '../actions/contacts';
 
@@ -9,14 +10,17 @@ function* getContacts(action) {
     const payload = yield customAxios
       .get('/contacts')
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
-    if (successCB) {
+    if (successCB && payload) {
       successCB();
     }
     yield put(getContactsListAction.success(payload));
   } catch (error) {
-    yield put(getContactsListAction.success(error));
+    showPopup(error);
+    yield put(getContactsListAction.failure(error));
     console.error(error);
   }
 }

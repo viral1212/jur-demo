@@ -15,6 +15,7 @@ import {
   GET_CONVERSATIONS_MESSAGE,
   GET_CONVERSATIONS_MESSAGE_LIST,
 } from '../actions/conversations';
+import { showPopup } from '../../utils/toast-notification';
 
 function* getConversationList(action) {
   try {
@@ -26,14 +27,17 @@ function* getConversationList(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     if (successCB && payload) {
       successCB();
     }
     yield put(getConversationsListAction.success(payload));
   } catch (error) {
-    yield put(getConversationsListAction.success(error));
+    showPopup(error);
+    yield put(getConversationsListAction.failure(error));
     console.error(error);
   }
 }
@@ -48,11 +52,14 @@ function* addConversation(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     yield put(addConversationAction.success(payload));
   } catch (error) {
-    yield put(addConversationAction.success(error));
+    showPopup(error);
+    yield put(addConversationAction.failure(error));
     console.error(error);
   }
 }
@@ -67,11 +74,14 @@ function* getConversion(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     yield put(getConversationAction.success(payload));
   } catch (error) {
-    yield put(getConversationAction.success(error));
+    showPopup(error);
+    yield put(getConversationAction.failure(error));
     console.error(error);
   }
 }
@@ -89,14 +99,17 @@ function* addMessage(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     if (successCB && payload) {
       successCB();
     }
     yield put(addConversationsMessagesAction.success(payload));
   } catch (error) {
-    yield put(addConversationsMessagesAction.success(error));
+    showPopup(error);
+    yield put(addConversationsMessagesAction.failure(error));
     console.error(error);
   }
 }
@@ -111,11 +124,14 @@ function* getMessagesList(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     yield put(getConversationsMessageListAction.success(payload));
   } catch (error) {
-    yield put(getConversationsMessageListAction.success(error));
+    showPopup(error);
+    yield put(getConversationsMessageListAction.failure(error));
     console.error(error);
   }
 }
@@ -130,14 +146,17 @@ function* getMessage(action) {
         headers: { user_id },
       })
       .then((res) => res.data)
-      .catch((err) => console.error(err));
+      .catch((error) => {
+        throw error?.message || 'something went wrong';
+      });
 
     if (successCB && payload) {
       successCB();
     }
     yield put(getConversationsMessageAction.success(payload));
   } catch (error) {
-    yield put(getConversationsMessageAction.success(error));
+    showPopup(error);
+    yield put(getConversationsMessageAction.failure(error));
     console.error(error);
   }
 }
