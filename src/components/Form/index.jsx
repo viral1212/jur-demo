@@ -30,9 +30,11 @@ export default function Form({
     <Formik
       initialValues={defaultValues}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        onSubmit(values);
-        setSubmitting(false);
-        resetForm();
+        setTimeout(() => {
+          onSubmit(values);
+          setSubmitting(false);
+          resetForm();
+        }, 500);
       }}
       validationSchema={Yup.object().shape({
         [textFieldName]: Yup.string().required(`${textFieldName} is required`),

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/Button';
 import UserItem from '../../components/UserItem';
@@ -15,20 +15,42 @@ export default function FirstTimeUser() {
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
   const { contactList, isLoading } = Contact;
+  const Conversation = useSelector((state) => state.Conversation);
+  const { conversationList } = Conversation;
   const [selectedContact, setSelectedContact] = useState({});
 
   useEffect(() => {
     dispatch(getContactsListAction.request());
   }, [dispatch]);
 
+  const haveConversations = useMemo(
+    () =>
+      conversationList.some((con) => {
+        return (
+          !!con.last_message?.length &&
+          con.last_message[0]?.sender_id === selectedContact.id
+        );
+      }),
+    [conversationList, selectedContact.id]
+  );
+
   const handleSelectedUserContact = useCallback(() => {
     dispatch(setSelectedContactAction.request(selectedContact));
-    dispatch(
-      setCurrentScreenAction.request({
-        screenName: SCREEN_NAME.noExistingConversation,
-      })
-    );
-  }, [dispatch, selectedContact]);
+
+    if (haveConversations) {
+      dispatch(
+        setCurrentScreenAction.request({
+          screenName: SCREEN_NAME.allConversation,
+        })
+      );
+    } else {
+      dispatch(
+        setCurrentScreenAction.request({
+          screenName: SCREEN_NAME.noExistingConversation,
+        })
+      );
+    }
+  }, [dispatch, haveConversations, selectedContact]);
 
   return (
     <Layout title="Let us know who you are">

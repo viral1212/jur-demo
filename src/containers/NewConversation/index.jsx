@@ -46,11 +46,16 @@ export default function NewConversation() {
 
   const handleOnSubmit = (values) => {
     const { content } = values;
+
     dispatch(
       addConversationsMessagesAction.request({
         body: { content },
         successCB: () =>
-          dispatch(getConversationAction.request(addNewconversationsData.id)),
+          dispatch(
+            getConversationAction.request(
+              addNewconversationsData?.id || selectedConversation?.id
+            )
+          ),
       })
     );
   };
