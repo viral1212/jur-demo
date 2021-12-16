@@ -5,13 +5,13 @@ import TextItem from '../TextItem';
 import { TriangleIcon, UserAvatarIcon } from '../Icon';
 
 UserItem.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   isSelected: PropTypes.bool,
   className: PropTypes.string,
   isShowSentIcon: PropTypes.bool,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };
 
 export default function UserItem({
@@ -44,15 +44,19 @@ export default function UserItem({
         )}
       </div>
       <div className="flex flex-col items-start ml-5 font-medium">
-        <TextItem text={title} />
-        <TextItem
-          text={subtitle}
-          className="text-gray-350 font-semibold leading-none"
-        />
-        <TextItem
-          text={description}
-          className="text-gray-350 font-normal leading-none"
-        />
+        {title && <TextItem text={title} />}
+        {subtitle && (
+          <TextItem
+            text={subtitle}
+            className="text-gray-350 font-semibold leading-none"
+          />
+        )}
+        {description && (
+          <TextItem
+            text={description}
+            className="text-gray-350 font-normal leading-none"
+          />
+        )}
       </div>
     </div>
   );

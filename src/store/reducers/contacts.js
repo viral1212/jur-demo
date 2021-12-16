@@ -1,9 +1,15 @@
-import { FAILURE, REQUEST, SUCCESS } from '../actions/common';
-import { GET_CONTACTS_LIST } from '../actions/contacts';
+import { FAILURE, REQUEST, RESET, SUCCESS } from '../actions/common';
+import {
+  GET_CONTACTS_LIST,
+  SELECTED_CONTACT,
+  SELECTED_CONTACT_FOR_CONVERSATIONS,
+} from '../actions/contacts';
 
 const initialState = {
   isLoading: false,
-  contacts: [],
+  selectedUser: {},
+  contactList: [],
+  conversationContacts: [],
   error: null,
 };
 
@@ -12,6 +18,19 @@ const contactsReducers = (
   { payload, error, query, ...action }
 ) => {
   switch (action.type) {
+    case SELECTED_CONTACT[REQUEST]:
+      return {
+        ...state,
+        isLoading: false,
+        selectedUser: query,
+      };
+    case SELECTED_CONTACT[RESET]:
+      return {
+        ...state,
+        isLoading: false,
+        selectedUser: {},
+      };
+
     case GET_CONTACTS_LIST[REQUEST]:
       return {
         ...state,
@@ -20,7 +39,7 @@ const contactsReducers = (
     case GET_CONTACTS_LIST[SUCCESS]:
       return {
         ...state,
-        contacts: payload,
+        contactList: payload,
         error: null,
         isLoading: false,
       };
@@ -29,6 +48,19 @@ const contactsReducers = (
         ...state,
         isLoading: false,
         error,
+      };
+
+    case SELECTED_CONTACT_FOR_CONVERSATIONS[REQUEST]:
+      return {
+        ...state,
+        isLoading: false,
+        conversationContacts: query,
+      };
+    case SELECTED_CONTACT_FOR_CONVERSATIONS[RESET]:
+      return {
+        ...state,
+        isLoading: false,
+        conversationContacts: [],
       };
 
     default:

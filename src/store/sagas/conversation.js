@@ -1,4 +1,4 @@
-import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { customAxios } from '../../config/axios';
 import { REQUEST } from '../actions/common';
 import {
@@ -14,12 +14,19 @@ import {
   GET_CONVERSATIONS_LIST,
   GET_CONVERSATIONS_MESSAGE,
   GET_CONVERSATIONS_MESSAGE_LIST,
-} from '../actions/conversions';
+} from '../actions/conversations';
 
-function* getConversionsList(action) {
+function* getConversationList(action) {
   try {
     const { successCB } = action;
-    const payload = yield customAxios.get('/conversations');
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
+
+    const payload = yield customAxios
+      .get('/conversations', {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
 
     if (successCB) {
       successCB();
@@ -30,41 +37,59 @@ function* getConversionsList(action) {
     console.error(error);
   }
 }
-function* addConversions(action) {
-  try {
-    const { successCB, body } = action;
-    const payload = yield customAxios.post('/conversations', body);
 
-    if (successCB) {
-      successCB();
-    }
+function* addConversation(action) {
+  try {
+    const { query } = action;
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
+
+    const payload = yield customAxios
+      .post('/conversations', query, {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
+
     yield put(addConversationAction.success(payload));
   } catch (error) {
     yield put(addConversationAction.success(error));
     console.error(error);
   }
 }
+
 function* getConversion(action) {
   try {
-    const { id, successCB } = action;
-    const payload = yield customAxios.get(`/conversations/:${id}`);
+    const { query } = action;
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    if (successCB) {
-      successCB();
-    }
+    const payload = yield customAxios
+      .get(`/conversations/${query}`, {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
+
     yield put(getConversationAction.success(payload));
   } catch (error) {
     yield put(getConversationAction.success(error));
     console.error(error);
   }
 }
+
 function* addMessage(action) {
   try {
-    const { successCB, body, id } = action;
-    const payload = yield customAxios.post(
-      `/conversations/:${id}/messages`,
-      body
-    );
+    const { query } = action;
+    const { body, successCB } = query;
+
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
+    const id = yield select((state) => state.Conversation.conversations.id);
+
+    const payload = yield customAxios
+      .post(`/conversations/${id}/messages`, body, {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
 
     if (successCB) {
       successCB();
@@ -78,9 +103,14 @@ function* addMessage(action) {
 function* getMessage(action) {
   try {
     const { id, successCB } = action;
-    const payload = yield customAxios.get(
-      `/conversations/:${id}/messages/:messageId`
-    );
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
+
+    const payload = yield customAxios
+      .get(`/conversations/${id}/messages/:messageId`, {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
 
     if (successCB) {
       successCB();
@@ -94,7 +124,14 @@ function* getMessage(action) {
 function* getMessagesList(action) {
   try {
     const { id, successCB } = action;
-    const payload = yield customAxios.get(`/conversations/:${id}/messages`);
+    const user_id = yield select((state) => state.Contact.selectedUser.id);
+
+    const payload = yield customAxios
+      .get(`/conversations/${id}/messages`, {
+        headers: { user_id },
+      })
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
 
     if (successCB) {
       successCB();
@@ -106,11 +143,11 @@ function* getMessagesList(action) {
   }
 }
 
-function* watchGetConversionsList() {
-  yield takeEvery(GET_CONVERSATIONS_LIST[REQUEST], getConversionsList);
+function* watchGetConversationList() {
+  yield takeEvery(GET_CONVERSATIONS_LIST[REQUEST], getConversationList);
 }
-function* watchAddConversions() {
-  yield takeEvery(ADD_CONVERSATION[REQUEST], addConversions);
+function* watchAddConversation() {
+  yield takeEvery(ADD_CONVERSATION[REQUEST], addConversation);
 }
 function* watchGetConversion() {
   yield takeEvery(GET_CONVERSATION[REQUEST], getConversion);
@@ -125,10 +162,10 @@ function* watchGetMessagesList() {
   yield takeEvery(GET_CONVERSATIONS_MESSAGE_LIST[REQUEST], getMessagesList);
 }
 
-export default function* conversionsSaga() {
+export default function* ConversationSaga() {
   yield all([
-    fork(watchGetConversionsList),
-    fork(watchAddConversions),
+    fork(watchGetConversationList),
+    fork(watchAddConversation),
     fork(watchGetConversion),
     fork(watchAddMessage),
     fork(watchGetMessage),

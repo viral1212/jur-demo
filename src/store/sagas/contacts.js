@@ -6,7 +6,10 @@ import { getContactsListAction, GET_CONTACTS_LIST } from '../actions/contacts';
 function* getContacts(action) {
   try {
     const { successCB } = action;
-    const payload = yield customAxios.get('/contacts');
+    const payload = yield customAxios
+      .get('/contacts')
+      .then((res) => res.data)
+      .catch((err) => console.error(err));
 
     if (successCB) {
       successCB();

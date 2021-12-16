@@ -25,15 +25,14 @@ export default function Form({
   formGrid = 3,
 }) {
   const textFieldName = fieldName || 'content';
+
   return (
     <Formik
       initialValues={defaultValues}
-      onSubmit={(values, actions) => {
-        setTimeout(() => {
-          onSubmit(values);
-          actions.setSubmitting(false);
-          actions.resetForm();
-        }, 500);
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        onSubmit(values);
+        setSubmitting(false);
+        resetForm();
       }}
       validationSchema={Yup.object().shape({
         [textFieldName]: Yup.string().required(`${textFieldName} is required`),

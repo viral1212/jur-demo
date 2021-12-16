@@ -6,14 +6,14 @@ import {
   GET_CONVERSATIONS_LIST,
   GET_CONVERSATIONS_MESSAGE,
   GET_CONVERSATIONS_MESSAGE_LIST,
-} from '../actions/conversions';
+} from '../actions/conversations';
 
 const initialState = {
   isLoading: false,
-  conversionsList: [],
-  addNewconversationsId: null,
+  conversationList: [],
+  addNewconversationsData: null,
   conversations: {},
-  addNewconversationsMessageId: null,
+  addNewconversationsMessageData: null,
   message: {},
   messageList: [],
   error: null,
@@ -32,7 +32,7 @@ const conversationsReducers = (
     case GET_CONVERSATIONS_LIST[SUCCESS]:
       return {
         ...state,
-        conversionsList: payload,
+        conversationList: payload,
         error: null,
         isLoading: false,
       };
@@ -51,7 +51,7 @@ const conversationsReducers = (
     case ADD_CONVERSATION[SUCCESS]:
       return {
         ...state,
-        addNewconversationsId: payload,
+        addNewconversationsData: payload,
         error: null,
         isLoading: false,
       };
@@ -89,7 +89,7 @@ const conversationsReducers = (
     case ADD_CONVERSATIONS_MESSAGE[SUCCESS]:
       return {
         ...state,
-        addNewconversationsMessageId: payload,
+        addNewconversationsMessageData: payload,
         error: null,
         isLoading: false,
       };

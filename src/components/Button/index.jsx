@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 Button.propTypes = {
   children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   className: PropTypes.string,
   disabled: PropTypes.bool,
   type: PropTypes.oneOf(['submit', 'button']),

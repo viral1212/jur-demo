@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import contactsReducers from './contacts';
-import conversationsReducers from './conversions';
+import conversationsReducers from './conversation';
+import screensReducers from './screen';
 
 const rootReducer = combineReducers({
-  Contacts: contactsReducers,
-  Conversations: conversationsReducers,
+  Screen: screensReducers,
+  Contact: contactsReducers,
+  Conversation: conversationsReducers,
 });
 
 export default rootReducer;

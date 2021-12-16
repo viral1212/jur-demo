@@ -20,7 +20,7 @@ export default function LeftArrowIcon({ width = 40, height = 40, className }) {
       <path
         d="M23.3335 10L13.3335 20L23.3335 30"
         stroke="black"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );

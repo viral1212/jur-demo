@@ -1,63 +1,67 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import UserItem from '../../components/UserItem';
 import Form from '../../components/Form';
 import Layout from '../../layout';
+import { SCREEN_NAME } from '../../utils/screens';
+import { addConversationAction } from '../../store/actions/conversations';
+import { setCurrentScreenAction } from '../../store/actions/screen';
 
-SelectedContacts.prototypes = {
-  selectedContactsforConvo: PropTypes.arrayOf({
-    id: PropTypes.number,
-    title: PropTypes.number,
-    description: PropTypes.number,
-  }),
-  selectedUser: PropTypes.objectOf({
-    id: PropTypes.number,
-    title: PropTypes.number,
-    description: PropTypes.number,
-  }),
-  setConversations: PropTypes.func,
-  setScreenCount: PropTypes.number,
-};
+export default function SelectedContacts() {
+  const dispatch = useDispatch();
+  const Contact = useSelector((state) => state.Contact);
+  const { selectedUser, conversationContacts } = Contact;
 
-export default function SelectedContacts({
-  selectedContactsforConvo,
-  setConversations,
-  setScreenCount,
-  selectedUser,
-}) {
+  const layoutTitle = `Welcome ${
+    selectedUser && selectedUser?.name?.split(' ')[0]
+  }!`;
+  const layoutSubTitle = `Give title to start a new conversation with  ${
+    conversationContacts.length === 1
+      ? conversationContacts.length + ' participant'
+      : conversationContacts.length + ' participants'
+  }`;
+  const conversationContactsIDS = conversationContacts.map((c) => c.id);
+
+  const handleOnSubmit = (values) => {
+    const { title } = values;
+    dispatch(
+      addConversationAction.request({
+        title,
+        contact_ids: conversationContactsIDS,
+      })
+    );
+    dispatch(
+      setCurrentScreenAction.request({
+        screenName: SCREEN_NAME.newConversation,
+      })
+    );
+  };
+
   return (
     <Layout
-      title={`Welcome ${selectedUser.title.split(' ')[0]}!`}
-      subTitle={`Give title to start a new conversation with  ${
-        selectedContactsforConvo.length === 1
-          ? selectedContactsforConvo.length + ' participant'
-          : selectedContactsforConvo.length + ' participants'
-      }`}
+      title={layoutTitle}
+      subTitle={layoutSubTitle}
       showBackButton
-      onHandleBackBtnClick={() => setScreenCount(2)}
+      onHandleBackBtnClick={() =>
+        dispatch(
+          setCurrentScreenAction.request({
+            screenName: SCREEN_NAME.noExistingConversation,
+          })
+        )
+      }
     >
       <div className="flex flex-col items-center mt-20">
         <div className="grid grid-cols-2 gap-8 pt-12">
-          {selectedContactsforConvo.map((contact) => (
-            <UserItem
-              onClick={() => console.log('hello')}
-              isSelected
-              title={contact.title}
-              description={contact.description}
-            />
-          ))}
+          {!!conversationContacts.length &&
+            conversationContacts.map((cont, index) => (
+              <UserItem key={index} isSelected title={cont.name} />
+            ))}
         </div>
         <div className="pt-80 ml-48">
           <Form
             fieldName="title"
             defaultValues={{ title: '' }}
-            onSubmit={(values) => {
-              setConversations({
-                title: values.title,
-                contact_ids: 1,
-              });
-              setScreenCount(4);
-            }}
+            onSubmit={handleOnSubmit}
             submitButtonText="Start Conversation"
           />
         </div>
