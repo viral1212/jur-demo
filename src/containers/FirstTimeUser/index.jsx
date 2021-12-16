@@ -9,10 +9,12 @@ import {
   setSelectedContactAction,
 } from '../../store/actions/contacts';
 import { setCurrentScreenAction } from '../../store/actions/screen';
+import Skeleton from '../../components/Skeleton';
 
 export default function FirstTimeUser() {
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
+  const { contactList, isLoading } = Contact;
   const [selectedContact, setSelectedContact] = useState({});
 
   useEffect(() => {
@@ -31,9 +33,10 @@ export default function FirstTimeUser() {
   return (
     <Layout title="Let us know who you are">
       <div className="flex flex-col items-center mt-20">
-        <ul>
-          {Contact.contactList.length > 0 &&
-            Contact.contactList.map((cont) => (
+        <ul className="w-64">
+          <Skeleton visible={isLoading} />
+          {contactList.length > 0 &&
+            contactList.map((cont) => (
               <li key={cont.id}>
                 <UserItem
                   onClick={() => setSelectedContact(cont)}

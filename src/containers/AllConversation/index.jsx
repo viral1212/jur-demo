@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import UserItem from '../../components/UserItem';
 import Layout from '../../layout';
@@ -6,8 +6,39 @@ import { SCREEN_NAME } from '../../utils/screens';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversationsListAction } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
+import { ActionCableContext } from '../../context/ActionCableContext';
 
 export default function AllConversation() {
+  const cable = useContext(ActionCableContext);
+  const [channel, setChannel] = useState(null);
+
+  const receivedData = useCallback((data) => {
+    console.log(data, 'received');
+  }, []);
+
+  useEffect(() => {
+    const channel = cable.subscriptions.create(
+      {
+        channel: 'NotificationsChannel',
+      },
+      {
+        connected: () => {
+          console.log('connected: action cable');
+        },
+        received: (data) => {
+          window.alert('hi');
+          receivedData(data);
+        },
+      }
+    );
+
+    setChannel(channel);
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [cable.subscriptions, receivedData]);
+
   const dispatch = useDispatch();
   const Conversation = useSelector((state) => state.Conversation);
   const { conversationList } = Conversation;
