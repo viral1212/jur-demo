@@ -9,11 +9,12 @@ import {
   getConversationAction,
 } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
+import Skeleton from '../../components/Skeleton';
 
 export default function NewConversation() {
   const dispatch = useDispatch();
   const Conversation = useSelector((state) => state.Conversation);
-  const { addNewconversationsData, conversations } = Conversation;
+  const { addNewconversationsData, conversations, isLoading } = Conversation;
   const { recent_messages } = conversations;
   const Screen = useSelector((state) => state.Screen);
   const { queryState } = Screen;
@@ -74,6 +75,7 @@ export default function NewConversation() {
       showBackButton
     >
       <div className="flex flex-col items-start mt-20">
+        <Skeleton visible={isLoading} />
         <ul className="w-full h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
           {!!recent_messages?.length &&
             recent_messages.map((message) => (
@@ -87,15 +89,17 @@ export default function NewConversation() {
             ))}
         </ul>
       </div>
-      <div className="fixed bottom-0 py-10">
-        <Form
-          fieldName="content"
-          defaultValues={{ content: '' }}
-          onSubmit={handleOnSubmit}
-          formGrid={6}
-          submitButtonText="Send"
-        />
-      </div>
+      {!isLoading && (
+        <div className="fixed bottom-0 py-10">
+          <Form
+            fieldName="content"
+            defaultValues={{ content: '' }}
+            onSubmit={handleOnSubmit}
+            formGrid={6}
+            submitButtonText="Send"
+          />
+        </div>
+      )}
     </Layout>
   );
 }

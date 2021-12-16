@@ -10,7 +10,7 @@ export default function Skeleton({ visible }) {
   return (
     <div
       className={clsx(
-        'border border-blue-300 shadow rounded-md p-4 max-w-sm w-full mx-auto',
+        'border border-blue-300 shadow rounded-md p-4 max-w-sm w-full',
         visible ? 'block' : 'hidden'
       )}
     >

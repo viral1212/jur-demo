@@ -6,11 +6,12 @@ import Layout from '../../layout';
 import { SCREEN_NAME } from '../../utils/screens';
 import { addConversationAction } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
+import Skeleton from '../../components/Skeleton';
 
 export default function SelectedContacts() {
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
-  const { selectedUser, conversationContacts } = Contact;
+  const { selectedUser, conversationContacts, isLoading } = Contact;
 
   const layoutTitle = `Welcome ${
     selectedUser && selectedUser?.name?.split(' ')[0]
@@ -49,22 +50,27 @@ export default function SelectedContacts() {
           })
         )
       }
+      className="mb-0"
     >
       <div className="flex flex-col items-center mt-20">
+        <Skeleton visible={isLoading} />
         <div className="grid grid-cols-2 gap-8 pt-12">
           {!!conversationContacts.length &&
             conversationContacts.map((cont, index) => (
               <UserItem key={index} isSelected title={cont.name} />
             ))}
         </div>
-        <div className="pt-80 ml-48">
-          <Form
-            fieldName="title"
-            defaultValues={{ title: '' }}
-            onSubmit={handleOnSubmit}
-            submitButtonText="Start Conversation"
-          />
-        </div>
+        {!isLoading && (
+          <div className="lg:pt-44 xl:pt-68 ml-48">
+            <Form
+              fieldName="title"
+              defaultValues={{ title: '' }}
+              placeholder="Enter new conversation name"
+              onSubmit={handleOnSubmit}
+              submitButtonText="Start Conversation"
+            />
+          </div>
+        )}
       </div>
     </Layout>
   );

@@ -55,7 +55,7 @@ export default function FirstTimeUser() {
   return (
     <Layout title="Let us know who you are">
       <div className="flex flex-col items-center mt-20">
-        <ul className="w-64">
+        <ul className="w-64 h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
           <Skeleton visible={isLoading} />
           {contactList.length > 0 &&
             contactList.map((cont) => (
@@ -70,7 +70,7 @@ export default function FirstTimeUser() {
             ))}
         </ul>
       </div>
-      {!!Object.keys(selectedContact).length && (
+      {!!Object.keys(selectedContact).length && !isLoading && (
         <div className="flex justify-end w-full mt-8">
           <Button
             onClick={handleSelectedUserContact}

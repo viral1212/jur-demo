@@ -25,7 +25,7 @@ export default function Layout({
   className,
 }) {
   return (
-    <div className={clsx('relative my-20', className)}>
+    <div className={clsx(className, 'relative my-20')}>
       <div className="absolute top-4 left-12">
         {showBackButton && (
           <div>

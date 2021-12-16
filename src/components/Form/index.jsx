@@ -8,6 +8,7 @@ import Button from '../Button';
 InputField.propTypes = {
   className: PropTypes.string,
   fieldName: PropTypes.string,
+  placeholder: PropTypes.string,
   disabled: PropTypes.bool,
   defaultValues: PropTypes.object,
   onSubmit: PropTypes.func,
@@ -17,6 +18,7 @@ InputField.propTypes = {
 
 export default function Form({
   defaultValues = {},
+  placeholder,
   fieldName,
   onSubmit,
   disabled,
@@ -56,6 +58,7 @@ export default function Form({
             <div className={`grid grid-cols-${formGrid} gap-24`}>
               <div className={`col-span-${formGrid - 1}`}>
                 <InputField
+                  placeholder={placeholder}
                   name={textFieldName}
                   type="text"
                   disabled={disabled}
