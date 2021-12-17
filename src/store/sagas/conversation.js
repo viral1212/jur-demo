@@ -22,22 +22,18 @@ function* getConversationList(action) {
     const { successCB } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const payload = yield customAxios
-      .get('/conversations', {
-        headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+    const { data } = yield customAxios.get('/conversations', {
+      headers: { user_id },
+    });
 
-    if (successCB && payload) {
+    if (successCB && data) {
       successCB();
     }
-    yield put(getConversationsListAction.success(payload));
+    yield put(getConversationsListAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(getConversationsListAction.failure(error));
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(getConversationsListAction.failure(message));
     console.error(error);
   }
 }
@@ -47,19 +43,15 @@ function* addConversation(action) {
     const { query } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const payload = yield customAxios
-      .post('/conversations', query, {
-        headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+    const { data } = yield customAxios.post('/conversations', query, {
+      headers: { user_id },
+    });
 
-    yield put(addConversationAction.success(payload));
+    yield put(addConversationAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(addConversationAction.failure(error));
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(addConversationAction.failure(message));
     console.error(error);
   }
 }
@@ -69,19 +61,15 @@ function* getConversion(action) {
     const { query } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const payload = yield customAxios
-      .get(`/conversations/${query}`, {
-        headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+    const { data } = yield customAxios.get(`/conversations/${query}`, {
+      headers: { user_id },
+    });
 
-    yield put(getConversationAction.success(payload));
+    yield put(getConversationAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(getConversationAction.failure(error));
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(getConversationAction.failure(message));
     console.error(error);
   }
 }
@@ -94,22 +82,22 @@ function* addMessage(action) {
     const user_id = yield select((state) => state.Contact.selectedUser.id);
     const id = yield select((state) => state.Conversation.conversations.id);
 
-    const payload = yield customAxios
-      .post(`/conversations/${id}/messages`, body, {
+    const { data } = yield customAxios.post(
+      `/conversations/${id}/messages`,
+      body,
+      {
         headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+      }
+    );
 
-    if (successCB && payload) {
+    if (successCB && data) {
       successCB();
     }
-    yield put(addConversationsMessagesAction.success(payload));
+    yield put(addConversationsMessagesAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(addConversationsMessagesAction.failure(error));
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(addConversationsMessagesAction.failure(message));
     console.error(error);
   }
 }
@@ -119,19 +107,15 @@ function* getMessagesList(action) {
     const { id } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const payload = yield customAxios
-      .get(`/conversations/${id}/messages`, {
-        headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+    const { data } = yield customAxios.get(`/conversations/${id}/messages`, {
+      headers: { user_id },
+    });
 
-    yield put(getConversationsMessageListAction.success(payload));
+    yield put(getConversationsMessageListAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(getConversationsMessageListAction.failure(error));
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(getConversationsMessageListAction.failure(message));
     console.error(error);
   }
 }
@@ -141,21 +125,20 @@ function* getMessage(action) {
     const { id, messageId, successCB } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const payload = yield customAxios
-      .get(`/conversations/${id}/messages/${messageId}`, {
+    const { data } = yield customAxios.get(
+      `/conversations/${id}/messages/${messageId}`,
+      {
         headers: { user_id },
-      })
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+      }
+    );
 
-    if (successCB && payload) {
+    if (successCB && data) {
       successCB();
     }
-    yield put(getConversationsMessageAction.success(payload));
+    yield put(getConversationsMessageAction.success(data));
   } catch (error) {
-    showPopup(error);
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
     yield put(getConversationsMessageAction.failure(error));
     console.error(error);
   }

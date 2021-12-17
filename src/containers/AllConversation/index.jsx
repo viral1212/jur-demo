@@ -55,22 +55,24 @@ export default function AllConversation({ messages }) {
               const description = last_message[0]?.content || '';
 
               return (
-                <li key={index}>
-                  <UserItem
-                    onClick={() =>
-                      dispatch(
-                        setCurrentScreenAction.request({
-                          screenName: SCREEN_NAME.newConversation,
-                          queryState: { selectedConversation: cont },
-                        })
-                      )
-                    }
-                    className="py-2.5 pl-2.5 hover:bg-cyan-150 focus:bg-gray-150"
-                    title={title}
-                    subtitle={subtitle}
-                    description={description}
-                  />
-                </li>
+                title && (
+                  <li key={index}>
+                    <UserItem
+                      onClick={() =>
+                        dispatch(
+                          setCurrentScreenAction.request({
+                            screenName: SCREEN_NAME.newConversation,
+                            queryState: { selectedConversation: cont },
+                          })
+                        )
+                      }
+                      className="py-2.5 pl-2.5 hover:bg-cyan-150 focus:bg-gray-150"
+                      title={title}
+                      subtitle={subtitle}
+                      description={description}
+                    />
+                  </li>
+                )
               );
             })}
         </ul>

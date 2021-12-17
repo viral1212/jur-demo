@@ -7,21 +7,17 @@ import { getContactsListAction, GET_CONTACTS_LIST } from '../actions/contacts';
 function* getContacts(action) {
   try {
     const { successCB } = action;
-    const payload = yield customAxios
-      .get('/contacts')
-      .then((res) => res.data)
-      .catch((error) => {
-        throw error?.message || 'something went wrong';
-      });
+    const { data } = yield customAxios.get('/contacts');
 
-    if (successCB && payload) {
+    if (successCB && data) {
       successCB();
     }
-    yield put(getContactsListAction.success(payload));
+    yield put(getContactsListAction.success(data));
   } catch (error) {
-    showPopup(error);
-    yield put(getContactsListAction.failure(error));
-    console.error(error);
+    const { message = 'something went wrong' } = error;
+    showPopup(message);
+    yield put(getContactsListAction.failure(message));
+    console.error(message);
   }
 }
 
