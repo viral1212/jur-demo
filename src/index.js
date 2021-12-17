@@ -1,19 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import actionCable from 'actioncable';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store/store';
 import './index.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { ActionCableContext } from './context/actionCableContext';
+
+const CableApp = {};
+CableApp.cable = actionCable.createConsumer(process.env.REACT_APP_WS_BASE_URL);
 
 ReactDOM.render(
   <React.StrictMode>
-    <ToastContainer />
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <ActionCableContext.Provider value={CableApp.cable}>
+      <ToastContainer />
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ActionCableContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

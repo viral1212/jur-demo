@@ -6,8 +6,10 @@ import FirstTimeUser from './containers/FirstTimeUser';
 import SelectedContacts from './containers/SelectedContacts';
 import NoExistingConversation from './containers/NoExistingConversation';
 import { SCREEN_NAME } from './utils/screens';
+import useActionCable from './hooks/useActionCable';
 
 export default function App() {
+  const messages = useActionCable();
   const Screen = useSelector((state) => state.Screen);
   const { currentScreen } = Screen;
 
@@ -19,7 +21,7 @@ export default function App() {
     case SCREEN_NAME.selectedContacts:
       return <SelectedContacts />;
     case SCREEN_NAME.newConversation:
-      return <NewConversation />;
+      return <NewConversation messages={messages} />;
     case SCREEN_NAME.allConversation:
       return <AllConversation />;
 

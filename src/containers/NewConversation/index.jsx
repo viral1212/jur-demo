@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Form from '../../components/Form';
 import UserItem from '../../components/UserItem';
 import Layout from '../../layout';
@@ -10,15 +11,28 @@ import {
 } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
+import { showPopup } from '../../utils/toast-notification';
 
-export default function NewConversation() {
+NewConversation.propTypes = {
+  message: PropTypes.object,
+};
+
+export default function NewConversation({ messages }) {
   const dispatch = useDispatch();
+  const Contact = useSelector((state) => state.Contact);
+  const { selectedUser } = Contact;
   const Conversation = useSelector((state) => state.Conversation);
   const { addNewconversationsData, conversations, isLoading } = Conversation;
   const { recent_messages } = conversations;
   const Screen = useSelector((state) => state.Screen);
   const { queryState } = Screen;
   const { selectedConversation = {} } = queryState;
+
+  useEffect(() => {
+    if (selectedUser.id !== messages?.sender_id) {
+      showPopup(messages.content);
+    }
+  }, [messages, selectedUser.id]);
 
   const getConversation = useCallback(
     (id) => {
@@ -72,6 +86,7 @@ export default function NewConversation() {
           })
         )
       }
+      className="mb-0"
       showBackButton
     >
       <div className="flex flex-col items-start mt-20">
@@ -90,7 +105,7 @@ export default function NewConversation() {
         </ul>
       </div>
       {!isLoading && (
-        <div className="fixed bottom-0 py-10">
+        <div className="pt-14">
           <Form
             fieldName="content"
             defaultValues={{ content: '' }}
