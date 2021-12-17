@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../components/Button';
 import { LeftArrowIcon } from '../components/Icon';
-import TextItem from '../components/TextItem';
+import Typography from '../components/Typography';
 import clsx from 'clsx';
 
 Layout.prototypes = {
@@ -43,13 +43,13 @@ export default function Layout({
       >
         <div>
           {title && (
-            <TextItem
+            <Typography
               text={title}
               className="pt-4 text-5xl leading-10 font-normal"
             />
           )}
           {subTitle && (
-            <TextItem
+            <Typography
               text={subTitle}
               className="pt-4 text-3xl text-gray-350 leading-8 font-normal"
             />

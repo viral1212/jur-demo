@@ -11,14 +11,8 @@ export default function useActionCable() {
         channel: 'NotificationsChannel',
       },
       {
-        connected: () => {
-          console.log('connected');
-        },
         received: (data) => {
           setReceivedMessage(data);
-        },
-        disconnected: () => {
-          console.log('disconnected');
         },
       }
     );
@@ -26,7 +20,7 @@ export default function useActionCable() {
     return () => {
       channel.unsubscribe();
     };
-  }, [cable.subscriptions, receivedMessage]);
+  }, [cable.subscriptions]);
 
   return receivedMessage;
 }

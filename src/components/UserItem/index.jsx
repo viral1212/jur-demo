@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import TextItem from '../TextItem';
+import Typography from '../Typography';
 import { TriangleIcon, UserAvatarIcon } from '../Icon';
 
 UserItem.propTypes = {
@@ -44,15 +44,15 @@ export default function UserItem({
         )}
       </div>
       <div className="flex flex-col items-start ml-5 font-medium">
-        {title && <TextItem text={title} />}
+        {title && <Typography text={title} />}
         {subtitle && (
-          <TextItem
+          <Typography
             text={subtitle}
             className="text-gray-350 font-semibold leading-none"
           />
         )}
         {description && (
-          <TextItem
+          <Typography
             text={description}
             className="text-gray-350 font-normal leading-none"
           />

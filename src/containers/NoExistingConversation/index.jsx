@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TextItem from '../../components/TextItem';
+import Typography from '../../components/Typography';
 import UserItem from '../../components/UserItem';
 import Button from '../../components/Button';
 import Layout from '../../layout';
@@ -74,7 +74,7 @@ export default function NoExistingConversation() {
       subTitle={!haveConversations ? 'You don’t have any conversations' : ''}
       className="mt-10"
     >
-      <TextItem
+      <Typography
         text="Select contacts to message"
         className="mt-20 pt-4 text-5xl leading-10 font-normal"
       />

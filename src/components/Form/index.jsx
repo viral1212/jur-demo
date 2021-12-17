@@ -28,16 +28,16 @@ export default function Form({
 }) {
   const textFieldName = fieldName || 'content';
 
+  const handleOnSubmit = (values, { setSubmitting, resetForm }) => {
+    onSubmit(values);
+    setSubmitting(false);
+    resetForm();
+  };
+
   return (
     <Formik
       initialValues={defaultValues}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
-        setTimeout(() => {
-          onSubmit(values);
-          setSubmitting(false);
-          resetForm();
-        }, 500);
-      }}
+      onSubmit={handleOnSubmit}
       validationSchema={Yup.object().shape({
         [textFieldName]: Yup.string().required(`${textFieldName} is required`),
       })}
