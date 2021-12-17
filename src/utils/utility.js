@@ -1,5 +1,3 @@
-export const truncate = (str, maxLength) => {
-  return str.length > maxLength || 10
-    ? str.substring(0, maxLength) + '...'
-    : str;
+export const truncate = (str, maxLength = 10) => {
+  return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
 };

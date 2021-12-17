@@ -25,16 +25,19 @@ export default function AllConversation({ messages }) {
   useEffect(() => {
     if (messages?.sender_id && selectedUser.id !== messages?.sender_id) {
       const truncatedString = truncate(messages.content, 25);
+      const conversation = conversationList.find(
+        (c) => c.id === messages.conversation_id
+      );
       showPopup(
         <UserItem
           title={messages.sender_name}
-          subtitle={'hello'}
+          subtitle={conversation.title}
           description={truncatedString}
           isShowSentIcon
         />
       );
     }
-  }, [messages, selectedUser.id]);
+  }, [conversationList, messages, selectedUser.id]);
 
   useEffect(() => {
     dispatch(getConversationsListAction.request());
@@ -46,13 +49,13 @@ export default function AllConversation({ messages }) {
         <Skeleton visible={isLoading} />
         <ul className="w-full h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
           {!!conversationList?.length &&
-            conversationList.map((cont) => {
+            conversationList.map((cont, index) => {
               const { title, last_message } = cont;
               const subtitle = last_message[0]?.sender_name || '';
               const description = last_message[0]?.content || '';
 
               return (
-                <li key={cont.id}>
+                <li key={index}>
                   <UserItem
                     onClick={() =>
                       dispatch(

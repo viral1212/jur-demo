@@ -23,7 +23,7 @@ export default function App() {
     case SCREEN_NAME.newConversation:
       return <NewConversation messages={messages} />;
     case SCREEN_NAME.allConversation:
-      return <AllConversation />;
+      return <AllConversation messages={messages} />;
 
     default:
       return <></>;
