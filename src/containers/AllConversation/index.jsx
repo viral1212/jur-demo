@@ -9,6 +9,7 @@ import { getConversationsListAction } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
 import { showPopup } from '../../utils/toast-notification';
+import { truncate } from '../../utils/utility';
 
 AllConversation.propTypes = {
   message: PropTypes.object,
@@ -22,8 +23,16 @@ export default function AllConversation({ messages }) {
   const { isLoading, conversationList } = Conversation;
 
   useEffect(() => {
-    if (selectedUser.id !== messages?.sender_id) {
-      showPopup(messages.content);
+    if (messages?.sender_id && selectedUser.id !== messages?.sender_id) {
+      const truncatedString = truncate(messages.content, 25);
+      showPopup(
+        <UserItem
+          title={messages.sender_name}
+          subtitle={'hello'}
+          description={truncatedString}
+          isShowSentIcon
+        />
+      );
     }
   }, [messages, selectedUser.id]);
 

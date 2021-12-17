@@ -16,7 +16,7 @@ CableApp.cable = actionCable.createConsumer(process.env.REACT_APP_WS_BASE_URL);
 ReactDOM.render(
   <React.StrictMode>
     <ActionCableContext.Provider value={CableApp.cable}>
-      <ToastContainer />
+      <ToastContainer closeButton={false} />
       <Provider store={store}>
         <App />
       </Provider>

@@ -12,6 +12,7 @@ import {
 import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
 import { showPopup } from '../../utils/toast-notification';
+import { truncate } from '../../utils/utility';
 
 NewConversation.propTypes = {
   message: PropTypes.object,
@@ -29,10 +30,25 @@ export default function NewConversation({ messages }) {
   const { selectedConversation = {} } = queryState;
 
   useEffect(() => {
-    if (selectedUser.id !== messages?.sender_id) {
-      showPopup(messages.content);
+    if (messages?.sender_id && selectedUser.id !== messages?.sender_id) {
+      const truncatedString = truncate(messages.content, 25);
+      showPopup(
+        <UserItem
+          title={messages.sender_name}
+          subtitle={
+            addNewconversationsData?.title || selectedConversation?.title
+          }
+          description={truncatedString}
+          isShowSentIcon
+        />
+      );
     }
-  }, [messages, selectedUser.id]);
+  }, [
+    addNewconversationsData?.title,
+    messages,
+    selectedConversation?.title,
+    selectedUser.id,
+  ]);
 
   const getConversation = useCallback(
     (id) => {

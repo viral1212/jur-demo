@@ -9,7 +9,7 @@ TextItem.propTypes = {
 export default function TextItem({ text, className = 'text-base' }) {
   return (
     <div className={className}>
-      <span>{text}</span>
+      <span className="truncate">{text}</span>
     </div>
   );
 }

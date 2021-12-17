@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 export const showPopup = (content) =>
   toast(content, {
     position: 'top-right',
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: true,
     closeOnClick: false,
     pauseOnHover: true,
