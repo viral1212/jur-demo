@@ -25,6 +25,11 @@ const conversationsReducers = (
 ) => {
   switch (action.type) {
     case GET_CONVERSATIONS_LIST[REQUEST]:
+    case ADD_CONVERSATION[REQUEST]:
+    case GET_CONVERSATION[REQUEST]:
+    case ADD_CONVERSATIONS_MESSAGE[REQUEST]:
+    case GET_CONVERSATIONS_MESSAGE[REQUEST]:
+    case GET_CONVERSATIONS_MESSAGE_LIST[REQUEST]:
       return {
         ...state,
         isLoading: true,
@@ -43,11 +48,6 @@ const conversationsReducers = (
         error: query,
       };
 
-    case ADD_CONVERSATION[REQUEST]:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case ADD_CONVERSATION[SUCCESS]:
       return {
         ...state,
@@ -62,11 +62,6 @@ const conversationsReducers = (
         error: query,
       };
 
-    case GET_CONVERSATION[REQUEST]:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case GET_CONVERSATION[SUCCESS]:
       return {
         ...state,
@@ -81,11 +76,6 @@ const conversationsReducers = (
         error: query,
       };
 
-    case ADD_CONVERSATIONS_MESSAGE[REQUEST]:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case ADD_CONVERSATIONS_MESSAGE[SUCCESS]:
       return {
         ...state,
@@ -100,11 +90,6 @@ const conversationsReducers = (
         error: query,
       };
 
-    case GET_CONVERSATIONS_MESSAGE[REQUEST]:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case GET_CONVERSATIONS_MESSAGE[SUCCESS]:
       return {
         ...state,
@@ -119,11 +104,6 @@ const conversationsReducers = (
         error: query,
       };
 
-    case GET_CONVERSATIONS_MESSAGE_LIST[REQUEST]:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case GET_CONVERSATIONS_MESSAGE_LIST[SUCCESS]:
       return {
         ...state,
