@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../../components/Form';
 import UserItem from '../../components/UserItem';
@@ -21,6 +21,7 @@ NewConversation.propTypes = {
 };
 
 export default function NewConversation({ newMessages }) {
+  const chatRef = useRef(null);
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
   const { selectedUser } = Contact;
@@ -96,6 +97,10 @@ export default function NewConversation({ newMessages }) {
     }
   }, [getConversationMessages, selectedConversation]);
 
+  const executeScroll = () => {
+    chatRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleOnSubmit = (values) => {
     const { content } = values;
     const successCB = () =>
@@ -111,6 +116,8 @@ export default function NewConversation({ newMessages }) {
         successCB,
       })
     );
+
+    executeScroll();
   };
 
   return (
@@ -138,6 +145,7 @@ export default function NewConversation({ newMessages }) {
                   title={message.sender_name}
                   description={message.content}
                 />
+                <div ref={chatRef} />
               </li>
             ))}
         </ul>
