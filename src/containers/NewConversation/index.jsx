@@ -17,10 +17,10 @@ import { showPopup } from '../../utils/toast-notification';
 import { truncate } from '../../utils/utility';
 
 NewConversation.propTypes = {
-  messages: PropTypes.object,
+  newMessages: PropTypes.object,
 };
 
-export default function NewConversation({ messages }) {
+export default function NewConversation({ newMessages }) {
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
   const { selectedUser } = Contact;
@@ -33,9 +33,9 @@ export default function NewConversation({ messages }) {
 
   useEffect(() => {
     if (
-      messages?.sender_id &&
-      selectedUser.id !== messages?.sender_id &&
-      conversations?.id !== messages?.conversation_id
+      newMessages?.sender_id &&
+      selectedUser.id !== newMessages?.sender_id &&
+      conversations?.id !== newMessages?.conversation_id
     ) {
       const successCB = (conversation_id, sender_name, title, content) => {
         const truncatedString = truncate(content, 25);
@@ -61,13 +61,14 @@ export default function NewConversation({ messages }) {
       };
       dispatch(
         getConversationsMessageAction.request({
-          id: messages.conversation_id,
-          messageId: messages.id,
+          id: newMessages.conversation_id,
+          messageId: newMessages.id,
           successCB,
         })
       );
     }
-  }, [conversations?.id, dispatch, messages, selectedUser.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, newMessages]);
 
   const getConversationMessages = useCallback(
     (id) => {
