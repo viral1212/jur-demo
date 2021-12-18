@@ -24,11 +24,12 @@ const contactsReducers = (
         isLoading: false,
         selectedUser: query,
       };
-    case SELECTED_CONTACT[RESET]:
+    case SELECTED_CONTACT[FAILURE]:
       return {
         ...state,
         isLoading: false,
         selectedUser: {},
+        error: query,
       };
 
     case GET_CONTACTS_LIST[REQUEST]:

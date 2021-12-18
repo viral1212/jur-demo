@@ -78,7 +78,7 @@ export default function Form({
               <div>
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || disabled}
                   className="md:p-5"
                   shouldShowBorder
                   shouldShowShadow

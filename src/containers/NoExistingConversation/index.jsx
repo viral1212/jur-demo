@@ -72,26 +72,26 @@ export default function NoExistingConversation() {
     <Layout
       title={`Welcome ${selectedUser && selectedUser?.name?.split(' ')[0]}!`}
       subTitle={!haveConversations ? 'You don’t have any conversations' : ''}
-      className="mt-10"
+      className="xl:large-container mx-0 mt-10"
     >
       <Typography
         text="Select contacts to message"
-        className="mt-20 pt-4 text-5xl leading-10 font-normal"
+        className="mt-16 pt-4 text-5xl leading-10 font-normal"
       />
-      <div className="flex flex-col items-center mt-11">
+      <div className="flex flex-col items-center mt-11 h-64 max-h-64 lg:h-80 lg:max-h-80 xl:h-96 xl:max-h-96 overflow-y-auto">
         <Skeleton visible={isLoading} />
-        <ul className="w-64 h-52 lg:h-60 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
+        <ul className="w-64">
           {contactList?.length > 0 &&
             contactList
               .filter((c) => c.id !== selectedUser.id)
               .map((con) => (
-                <li key={con.id}>
+                <li key={con.id} className="grid grid-cols-1">
                   <UserItem
                     onClick={() => handleContactClick(con)}
                     isSelected={
                       !!selectedContacts.find((sel) => con.id === sel.id)
                     }
-                    className="mt-5"
+                    className="py-2.5 pl-2.5"
                     title={con.name}
                   />
                 </li>
@@ -99,14 +99,16 @@ export default function NoExistingConversation() {
         </ul>
       </div>
       {!!selectedContacts.length && !isLoading && (
-        <Button
-          onClick={handleSelectedContactsConversation}
-          className="absolute right-0 mt-8 md:p-5 mr-80"
-          shouldShowBorder
-          shouldShowShadow
-        >
-          Continue
-        </Button>
+        <div className="flex justify-end w-full -mt-8 relative z-20">
+          <Button
+            onClick={handleSelectedContactsConversation}
+            className="md:p-5 mr-40"
+            shouldShowBorder
+            shouldShowShadow
+          >
+            Continue
+          </Button>
+        </div>
       )}
     </Layout>
   );

@@ -50,27 +50,32 @@ export default function SelectedContacts() {
           })
         )
       }
-      className="mb-0"
+      className="mt-13 mb-0"
     >
-      <div className="flex flex-col items-center mt-20">
+      <div className="flex flex-col items-center mt-11">
         <Skeleton visible={isLoading} />
-        <div className="grid grid-cols-2 gap-8 pt-12">
+        <div className="grid grid-cols-2 gap-9 pt-12">
           {!!conversationContacts?.length &&
             conversationContacts.map((cont, index) => (
-              <UserItem key={index} isSelected title={cont.name} />
+              <UserItem
+                key={index}
+                isSelected
+                title={cont.name}
+                className="py-1.5 px-10"
+              />
             ))}
         </div>
-        {!isLoading && (
-          <div className="lg:pt-44 xl:pt-68 ml-48">
-            <Form
-              fieldName="title"
-              defaultValues={{ title: '' }}
-              placeholder="Enter new conversation name"
-              onSubmit={handleOnSubmit}
-              submitButtonText="Start Conversation"
-            />
-          </div>
-        )}
+
+        <div className="lg:pt-44 xl:pt-68 ml-60">
+          <Form
+            fieldName="title"
+            defaultValues={{ title: '' }}
+            placeholder="Enter new conversation name"
+            onSubmit={handleOnSubmit}
+            submitButtonText="Start Conversation"
+            disabled={isLoading}
+          />
+        </div>
       </div>
     </Layout>
   );

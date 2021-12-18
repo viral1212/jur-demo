@@ -22,10 +22,10 @@ export default function Layout({
   title,
   subTitle,
   contentAlignment = 'center',
-  className,
+  className = 'mx-auto',
 }) {
   return (
-    <div className={clsx(className, 'relative my-20')}>
+    <div className={clsx(className, 'lg:container relative my-20')}>
       <div className="absolute top-4 left-12">
         {showBackButton && (
           <div>
@@ -37,7 +37,7 @@ export default function Layout({
       </div>
       <div
         className={clsx(
-          `container mx-auto text-${contentAlignment}`,
+          `text-${contentAlignment}`,
           contentAlignment === 'left' && 'pl-28'
         )}
       >

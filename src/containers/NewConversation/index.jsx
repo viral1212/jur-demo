@@ -124,12 +124,12 @@ export default function NewConversation({ newMessages }) {
           })
         )
       }
-      className="mb-0"
+      className="mt-7 mb-0"
       showBackButton
     >
-      <div className="flex flex-col items-start mt-20">
-        <Skeleton visible={isLoading} />
-        <ul className="w-full h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
+      <div className="flex items-start mt-10 pb-14">
+        <ul className="w-full flex flex-col-reverse h-64 max-h-64 lg:h-80 lg:max-h-80 xl:h-96 xl:max-h-96 overflow-y-auto">
+          <Skeleton visible={isLoading} />
           {!!messageList?.length &&
             messageList.map((message) => (
               <li key={message.id}>
@@ -142,17 +142,16 @@ export default function NewConversation({ newMessages }) {
             ))}
         </ul>
       </div>
-      {!isLoading && (
-        <div className="pt-14">
-          <Form
-            fieldName="content"
-            defaultValues={{ content: '' }}
-            onSubmit={handleOnSubmit}
-            formGrid={6}
-            submitButtonText="Send"
-          />
-        </div>
-      )}
+      <div>
+        <Form
+          fieldName="content"
+          defaultValues={{ content: '' }}
+          onSubmit={handleOnSubmit}
+          formGrid={3}
+          submitButtonText="Send"
+          disabled={isLoading}
+        />
+      </div>
     </Layout>
   );
 }

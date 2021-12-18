@@ -1,69 +1,45 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/Button';
 import UserItem from '../../components/UserItem';
 import Layout from '../../layout';
-import { SCREEN_NAME } from '../../utils/screens';
 import {
   getContactsListAction,
   setSelectedContactAction,
 } from '../../store/actions/contacts';
-import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
 
 export default function FirstTimeUser() {
   const dispatch = useDispatch();
   const Contact = useSelector((state) => state.Contact);
   const { contactList, isLoading } = Contact;
-  const Conversation = useSelector((state) => state.Conversation);
-  const { conversationList } = Conversation;
   const [selectedContact, setSelectedContact] = useState({});
 
   useEffect(() => {
     dispatch(getContactsListAction.request());
   }, [dispatch]);
 
-  const haveConversations = useMemo(
-    () =>
-      conversationList.some((con) => {
-        return (
-          !!con.last_message?.length &&
-          con.last_message[0]?.sender_id === selectedContact.id
-        );
-      }),
-    [conversationList, selectedContact.id]
-  );
-
   const handleSelectedUserContact = useCallback(() => {
     dispatch(setSelectedContactAction.request(selectedContact));
-
-    if (haveConversations) {
-      dispatch(
-        setCurrentScreenAction.request({
-          screenName: SCREEN_NAME.allConversation,
-        })
-      );
-    } else {
-      dispatch(
-        setCurrentScreenAction.request({
-          screenName: SCREEN_NAME.noExistingConversation,
-        })
-      );
-    }
-  }, [dispatch, haveConversations, selectedContact]);
+  }, [dispatch, selectedContact]);
 
   return (
-    <Layout title="Let us know who you are">
-      <div className="flex flex-col items-center mt-20">
-        <ul className="w-64 h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
+    <Layout
+      className="xl:large-container mx-0 my-20"
+      title="Let us know who you are"
+    >
+      <div className="flex flex-col items-center mt-20 h-64 max-h-64 lg:h-80 lg:max-h-80 xl:h-96 xl:max-h-96 overflow-y-auto">
+        <ul className="w-64">
+          <Skeleton visible={isLoading} />
+          <Skeleton visible={isLoading} />
           <Skeleton visible={isLoading} />
           {contactList?.length > 0 &&
             contactList.map((cont) => (
-              <li key={cont.id}>
+              <li key={cont.id} className="grid grid-cols-1">
                 <UserItem
                   onClick={() => setSelectedContact(cont)}
                   isSelected={selectedContact?.id === cont.id}
-                  className="mt-5"
+                  className="py-2.5 pl-2.5"
                   title={cont.name}
                 />
               </li>

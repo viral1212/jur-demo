@@ -66,10 +66,13 @@ export default function AllConversation({ newMessages }) {
   }, [dispatch]);
 
   return (
-    <Layout title="Your Conversations" contentAlignment="left">
+    <Layout
+      title="Your Conversations"
+      contentAlignment="left"
+      className="mt-7 mb-0 xl:mb-10"
+    >
       <div className="flex flex-col items-start mt-20">
-        <Skeleton visible={isLoading} />
-        <ul className="w-full h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
+        <ul className="w-full h-64 max-h-64 lg:h-80 lg:max-h-80 xl:h-96 xl:max-h-96 overflow-y-auto">
           {!!conversationList?.length &&
             conversationList.map((cont, index) => {
               const { title, last_message } = cont;
@@ -79,6 +82,9 @@ export default function AllConversation({ newMessages }) {
               return (
                 title && (
                   <li key={index}>
+                    <Skeleton visible={isLoading} showExtraSkeleton />
+                    <Skeleton visible={isLoading} showExtraSkeleton />
+                    <Skeleton visible={isLoading} showExtraSkeleton />
                     <UserItem
                       onClick={() =>
                         dispatch(
@@ -98,25 +104,25 @@ export default function AllConversation({ newMessages }) {
               );
             })}
         </ul>
-        {!isLoading && (
-          <div className="w-full flex justify-end pt-10">
-            <Button
-              onClick={() =>
-                dispatch(
-                  setCurrentScreenAction.request({
-                    screenName: SCREEN_NAME.noExistingConversation,
-                    queryState: { isCreateNewConversation: true },
-                  })
-                )
-              }
-              className="md:p-5"
-              shouldShowBorder
-              shouldShowShadow
-            >
-              Create New Conversation
-            </Button>
-          </div>
-        )}
+
+        <div className="w-full flex justify-end pt-10">
+          <Button
+            onClick={() =>
+              dispatch(
+                setCurrentScreenAction.request({
+                  screenName: SCREEN_NAME.noExistingConversation,
+                  queryState: { isCreateNewConversation: true },
+                })
+              )
+            }
+            className="md:p-5 mr-4"
+            disabled={isLoading}
+            shouldShowBorder
+            shouldShowShadow
+          >
+            Create New Conversation
+          </Button>
+        </div>
       </div>
     </Layout>
   );
