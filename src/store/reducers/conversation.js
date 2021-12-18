@@ -28,7 +28,6 @@ const conversationsReducers = (
     case ADD_CONVERSATION[REQUEST]:
     case GET_CONVERSATION[REQUEST]:
     case ADD_CONVERSATIONS_MESSAGE[REQUEST]:
-    case GET_CONVERSATIONS_MESSAGE[REQUEST]:
     case GET_CONVERSATIONS_MESSAGE_LIST[REQUEST]:
       return {
         ...state,
@@ -90,6 +89,12 @@ const conversationsReducers = (
         error: query,
       };
 
+    case GET_CONVERSATIONS_MESSAGE[REQUEST]:
+      return {
+        ...state,
+        message: {},
+        isLoading: true,
+      };
     case GET_CONVERSATIONS_MESSAGE[SUCCESS]:
       return {
         ...state,

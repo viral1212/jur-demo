@@ -104,10 +104,10 @@ function* addMessage(action) {
 
 function* getMessagesList(action) {
   try {
-    const { id } = action;
+    const { query } = action;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const { data } = yield customAxios.get(`/conversations/${id}/messages`, {
+    const { data } = yield customAxios.get(`/conversations/${query}/messages`, {
       headers: { user_id },
     });
 
@@ -122,20 +122,41 @@ function* getMessagesList(action) {
 
 function* getMessage(action) {
   try {
-    const { id, messageId, successCB } = action;
+    const { query } = action;
+    const { id, messageId, successCB } = query;
     const user_id = yield select((state) => state.Contact.selectedUser.id);
 
-    const { data } = yield customAxios.get(
-      `/conversations/${id}/messages/${messageId}`,
+    const { data: coversationsData } = yield customAxios.get(
+      `/conversations/${id}`,
       {
         headers: { user_id },
       }
     );
+    if (coversationsData) {
+      const { data } = yield customAxios.get(
+        `/conversations/${id}/messages/${messageId}`,
+        {
+          headers: { user_id },
+        }
+      );
 
-    if (successCB && data) {
-      successCB();
+      if (successCB && data) {
+        const { conversation_id, sender_name, content } = data;
+        successCB(
+          conversation_id,
+          sender_name,
+          coversationsData.title,
+          content
+        );
+      }
+
+      yield put(
+        getConversationsMessageAction.success({
+          ...data,
+          title: coversationsData.title,
+        })
+      );
     }
-    yield put(getConversationsMessageAction.success(data));
   } catch (error) {
     const { message = 'something went wrong' } = error;
     showPopup(message);

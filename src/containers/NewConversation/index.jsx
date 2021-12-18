@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addConversationsMessagesAction,
   getConversationAction,
+  getConversationsMessageAction,
+  getConversationsMessageListAction,
 } from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
@@ -15,7 +17,7 @@ import { showPopup } from '../../utils/toast-notification';
 import { truncate } from '../../utils/utility';
 
 NewConversation.propTypes = {
-  message: PropTypes.object,
+  messages: PropTypes.object,
 };
 
 export default function NewConversation({ messages }) {
@@ -23,36 +25,54 @@ export default function NewConversation({ messages }) {
   const Contact = useSelector((state) => state.Contact);
   const { selectedUser } = Contact;
   const Conversation = useSelector((state) => state.Conversation);
-  const { addNewconversationsData, conversations, isLoading } = Conversation;
-  const { recent_messages } = conversations;
+  const { addNewconversationsData, conversations, isLoading, messageList } =
+    Conversation;
   const Screen = useSelector((state) => state.Screen);
   const { queryState } = Screen;
   const { selectedConversation = {} } = queryState;
 
   useEffect(() => {
-    if (messages?.sender_id && selectedUser.id !== messages?.sender_id) {
-      const truncatedString = truncate(messages.content, 25);
-      showPopup(
-        <UserItem
-          title={messages.sender_name}
-          subtitle={
-            addNewconversationsData?.title || selectedConversation?.title
-          }
-          description={truncatedString}
-          isShowSentIcon
-        />
+    if (
+      messages?.sender_id &&
+      selectedUser.id !== messages?.sender_id &&
+      conversations?.id !== messages?.conversation_id
+    ) {
+      const successCB = (conversation_id, sender_name, title, content) => {
+        const truncatedString = truncate(content, 25);
+        const handleOnClick = () => {
+          dispatch(
+            setCurrentScreenAction.request({
+              screenName: SCREEN_NAME.newConversation,
+              queryState: {
+                selectedConversation: { id: conversation_id, title },
+              },
+            })
+          );
+        };
+        showPopup(
+          <UserItem
+            title={sender_name}
+            subtitle={title}
+            description={truncatedString}
+            isShowSentIcon
+            onClick={handleOnClick}
+          />
+        );
+      };
+      dispatch(
+        getConversationsMessageAction.request({
+          id: messages.conversation_id,
+          messageId: messages.id,
+          successCB,
+        })
       );
     }
-  }, [
-    addNewconversationsData?.title,
-    messages,
-    selectedConversation?.title,
-    selectedUser.id,
-  ]);
+  }, [conversations?.id, dispatch, messages, selectedUser.id]);
 
-  const getConversation = useCallback(
+  const getConversationMessages = useCallback(
     (id) => {
       dispatch(getConversationAction.request(id));
+      dispatch(getConversationsMessageListAction.request(id));
     },
     [dispatch]
   );
@@ -62,31 +82,32 @@ export default function NewConversation({ messages }) {
       addNewconversationsData &&
       Object.keys(addNewconversationsData)?.length > 0
     ) {
-      getConversation(addNewconversationsData?.id);
+      getConversationMessages(addNewconversationsData?.id);
     }
-  }, [addNewconversationsData, getConversation]);
+  }, [addNewconversationsData, getConversationMessages]);
 
   useEffect(() => {
     if (
       Object.keys(selectedConversation)?.length > 0 &&
       selectedConversation?.id
     ) {
-      getConversation(selectedConversation?.id);
+      getConversationMessages(selectedConversation?.id);
     }
-  }, [getConversation, selectedConversation]);
+  }, [getConversationMessages, selectedConversation]);
 
   const handleOnSubmit = (values) => {
     const { content } = values;
+    const successCB = () =>
+      dispatch(
+        getConversationsMessageListAction.request(
+          addNewconversationsData?.id || selectedConversation?.id
+        )
+      );
 
     dispatch(
       addConversationsMessagesAction.request({
         body: { content },
-        successCB: () =>
-          dispatch(
-            getConversationAction.request(
-              addNewconversationsData?.id || selectedConversation?.id
-            )
-          ),
+        successCB,
       })
     );
   };
@@ -108,8 +129,8 @@ export default function NewConversation({ messages }) {
       <div className="flex flex-col items-start mt-20">
         <Skeleton visible={isLoading} />
         <ul className="w-full h-64 xl:h-72 2xl:h-80 max-h-64 xl:max-h-72 2xl:max-h-80 overflow-y-auto">
-          {!!recent_messages?.length &&
-            recent_messages.map((message) => (
+          {!!messageList?.length &&
+            messageList.map((message) => (
               <li key={message.id}>
                 <UserItem
                   className="cursor-default py-2.5 pl-2.5 hover:bg-cyan-150 focus:bg-gray-150"

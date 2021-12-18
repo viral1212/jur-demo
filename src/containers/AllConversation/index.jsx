@@ -5,14 +5,17 @@ import UserItem from '../../components/UserItem';
 import Layout from '../../layout';
 import { SCREEN_NAME } from '../../utils/screens';
 import { useDispatch, useSelector } from 'react-redux';
-import { getConversationsListAction } from '../../store/actions/conversations';
+import {
+  getConversationsListAction,
+  getConversationsMessageAction,
+} from '../../store/actions/conversations';
 import { setCurrentScreenAction } from '../../store/actions/screen';
 import Skeleton from '../../components/Skeleton';
 import { showPopup } from '../../utils/toast-notification';
 import { truncate } from '../../utils/utility';
 
 AllConversation.propTypes = {
-  message: PropTypes.object,
+  messages: PropTypes.object,
 };
 
 export default function AllConversation({ messages }) {
@@ -24,20 +27,38 @@ export default function AllConversation({ messages }) {
 
   useEffect(() => {
     if (messages?.sender_id && selectedUser.id !== messages?.sender_id) {
-      const truncatedString = truncate(messages.content, 25);
-      const conversation = conversationList.find(
-        (c) => c.id === messages.conversation_id
-      );
-      showPopup(
-        <UserItem
-          title={messages.sender_name}
-          subtitle={conversation.title}
-          description={truncatedString}
-          isShowSentIcon
-        />
+      const successCB = (conversation_id, sender_name, title, content) => {
+        const truncatedString = truncate(content, 25);
+        const handleOnClick = () => {
+          dispatch(
+            setCurrentScreenAction.request({
+              screenName: SCREEN_NAME.newConversation,
+              queryState: {
+                selectedConversation: { id: conversation_id, title },
+              },
+            })
+          );
+        };
+        showPopup(
+          <UserItem
+            title={sender_name}
+            subtitle={title}
+            description={truncatedString}
+            isShowSentIcon
+            onClick={handleOnClick}
+          />
+        );
+      };
+
+      dispatch(
+        getConversationsMessageAction.request({
+          id: messages.conversation_id,
+          messageId: messages.id,
+          successCB,
+        })
       );
     }
-  }, [conversationList, messages, selectedUser.id]);
+  }, [conversationList, dispatch, messages, selectedUser.id]);
 
   useEffect(() => {
     dispatch(getConversationsListAction.request());
